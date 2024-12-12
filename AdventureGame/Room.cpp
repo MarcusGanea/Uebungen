@@ -51,5 +51,28 @@ void MonsterRoom::enter()
     else
     {
         std::cout << "Invalid choice. Please type 'fight' or 'run'.\n";
+      }
+}
+
+BossRoom1::BossRoom1() : Room("You see a Dark Knight!") {}
+
+void BossRoom1::enter()
+{
+    Room::enter();
+    std::cout << "The Dark Knight attacks you! Do you want to fight or run?\n";
+    std::string choice;
+    std::cin >> choice;
+
+    if (choice == "fight")
+    {
+        std::cout << "You bravely fight the Dark Knight and win!\n";
+    }
+    else if (choice == "run")
+    {
+        std::cout << "You run away safely.\n";
+    }
+    else
+    {
+        std::cout << "Invalid choice. Please type 'fight' or 'run'.\n";
     }
 }

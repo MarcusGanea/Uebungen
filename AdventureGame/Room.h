@@ -28,4 +28,11 @@ public:
     void enter() override;
 };
 
+class BossRoom1 : public Room
+{
+public:
+    BossRoom1();
+    void enter() override;
+};
+
 #endif // ROOM_H
