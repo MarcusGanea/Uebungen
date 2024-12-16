@@ -14,6 +14,13 @@ protected:
     std::string description;
 };
 
+class BaseRoom : public Room
+{
+public:
+    BaseRoom();
+    void enter() override;
+};
+
 class TreasureRoom : public Room
 {
 public:

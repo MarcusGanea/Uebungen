@@ -15,6 +15,7 @@ public:
 private:
     void showIntroduction();
     std::map<std::string, Room *> rooms;
+    Room *currentRoom; // Declare currentRoom here
 };
 
 #endif // GAME_H

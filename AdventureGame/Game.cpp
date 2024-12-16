@@ -3,9 +3,11 @@
 
 Game::Game()
 {
+    rooms["base"] = new BaseRoom();
     rooms["left"] = new TreasureRoom();
     rooms["right"] = new MonsterRoom();
-    rooms["straight"] = new BossRoom1();
+    rooms["boss"] = new BossRoom1();
+    currentRoom = rooms["base"]; // Initialize currentRoom
 }
 
 Game::~Game()
@@ -18,23 +20,26 @@ Game::~Game()
 
 void Game::start()
 {
-    showIntroduction();
-    std::string choice;
-    std::cin >> choice;
+    while (true)
+    {
+        currentRoom->enter(); // Use currentRoom
+        std::string choice;
+        std::cin >> choice;
 
-    if (rooms.find(choice) != rooms.end())
-    {
-        rooms[choice]->enter();
-    }
-    else
-    {
-        std::cout << "Invalid choice. Please type 'left' or 'right'.\n";
+        if (rooms.find(choice) != rooms.end())
+        {
+            currentRoom = rooms[choice]; // Update currentRoom
+        }
+        else
+        {
+            std::cout << "Invalid choice. Please type 'left', 'right', 'boss', or 'base'.\n";
+        }
     }
 }
 
 void Game::showIntroduction()
 {
     std::cout << "Welcome to the Adventure Game!\n";
-    std::cout << "You find yourself in a dark room with two doors.\n";
+    std::cout << "You find yourself in a dark room with three doors.\n";
     std::cout << "Do you want to go through the left door, straight door or the right door?\n";
 }
