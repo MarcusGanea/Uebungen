@@ -12,4 +12,5 @@ introduction::introduction()
 
 introduction::~introduction()
 {
+    cout << "Good luck on your journey!" << endl;
 }
