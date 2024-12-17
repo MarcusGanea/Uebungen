@@ -7,7 +7,10 @@ using namespace std;
 
 int main()
 {
+    menu m;
+    m.intro();
     cal_IO cal;
     cal.choose();
+    m.outro();
     return 0;
 }
