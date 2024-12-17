@@ -17,6 +17,11 @@ void menu::intro()
     cout << "Welcome to the calculator" << endl;
 }
 
+void menu::outro()
+{
+    cout << "\nSee you next time Space Cowboy.." << endl;
+}
+
 void menu::display()
 {
 
