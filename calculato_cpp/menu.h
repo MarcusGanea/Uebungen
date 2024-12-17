@@ -10,6 +10,7 @@ public:
     ~menu();
     void display();
     void intro();
+    void outro();
 };
 
 #endif // MENU_H
