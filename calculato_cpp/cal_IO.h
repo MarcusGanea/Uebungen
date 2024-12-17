@@ -10,6 +10,7 @@ public:
     cal_IO();
     ~cal_IO();
     void input();
+    void choose();
 };
 
 #endif // CAL_IO_H

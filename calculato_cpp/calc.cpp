@@ -38,7 +38,7 @@ float calc::calculate(float n1, float n2, char op)
         result = pow(n1, n2);
         break;
     default:
-        cout << "Invalid operator";
+        cout << "Invalid operator\n";
         break;
     }
     return result;

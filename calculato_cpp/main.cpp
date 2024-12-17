@@ -3,10 +3,11 @@
 using namespace std;
 #include "calc.h"
 #include "cal_IO.h"
+#include "menu.h"
 
 int main()
 {
     cal_IO cal;
-    cal.input();
+    cal.choose();
     return 0;
 }
