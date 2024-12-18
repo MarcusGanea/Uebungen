@@ -156,11 +156,15 @@ void Player::equipItem(const std::string &item)
         }
         weapon = "sword +5";
         attackPower += 5;
+        std::cout << "*********************************************\n";
         std::cout << "You equipped the sword. Your attack power is now " << attackPower << ".\n";
+        std::cout << "*********************************************\n";
     }
     else
     {
+        std::cout << "*********************************************\n";
         std::cout << "You can't equip that item.\n";
+        std::cout << "*********************************************\n";
     }
 }
 
@@ -169,12 +173,16 @@ void Player::unequipItem()
     if (weapon == "sword +5")
     {
         attackPower -= 5;
+        std::cout << "*********************************************\n";
         std::cout << "You unequipped the sword. Your attack power is now " << attackPower << ".\n";
+        std::cout << "*********************************************\n";
         weapon = "None";
     }
     else
     {
+        std::cout << "*********************************************\n";
         std::cout << "You don't have any item equipped.\n";
+        std::cout << "*********************************************\n";
     }
 }
 
@@ -190,7 +198,9 @@ void Player::useItem(const std::string &item)
             {
                 health = maxHealth;
             }
+            std::cout << "*********************************************\n";
             std::cout << "You used a Health Potion. Your health is now " << health << ".\n";
+            std::cout << "*********************************************\n";
             items.erase(it);
         }
         else

@@ -180,10 +180,41 @@ void Game::displayIntro() const
              `-._,-'   `-._______,-'   `-._,-'
     )" << std::endl;
 
-    std::cout << "Welcome to the Adventure Game!\n";
+    std::cout << "Dungeon Abyss\n";
+    std::cout << "Game Developed by: Marcus Ganea\n";
     std::cout << "Press Enter to start the game...";
     std::cin.ignore();
     std::cin.get();
+}
+
+void Game::displayOutro()
+{
+    std::cout << R"(
+                            ,-.
+       ___,---.__          /'|`\          __,---,___
+    ,-'    \`    `-.____,-'  |  `-.____,-'    //    `-.
+  ,'        |           ~'\     /`~           |        `.
+ /      ___//              `. ,'          ,  , \___      \
+|    ,-'   `-.__   _         |        ,    __,-'   `-.    |
+|   /          /\_  `   .    |    ,      _/\          \   |
+\  |           \ \`-.___ \   |   / ___,-'/ /           |  /
+ \  \           | `._   `\\  |  //'   _,' |           /  /
+  `-.\         /'  _ `---'' , . ``---' _  `\         /,-'
+     ``       /     \    ,='/ \`=.    /     \       ''
+             |__   /|\_,--.,-.--,--._/|\   __|
+             /  `./  \\`\ |  |  | /,//' \,'  \
+            /   /     ||--+--|--+-/-|     \   \
+           |   |     /'\_\_\ | /_/_/`\     |   |
+            \   \__, \_     `~'     _/ .__/   /
+             `-._,-'   `-._______,-'   `-._,-'
+    )" << std::endl;
+
+    std::cout << "Thanks For Playing My Game!\n";
+    std::cout << "Credits:\n";
+    std::cout << "Game Developed by: Marcus Ganea\n";
+    std::cin.ignore();
+    std::cin.get();
+    gameOver();
 }
 
 Room *Game::getCurrentRoom() const

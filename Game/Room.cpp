@@ -28,12 +28,11 @@ void Room::lookAround() const
     std::cout << detailedDescription << std::endl;
 }
 
-BaseRoom::BaseRoom() : Room("You find yourself in a dark room with three doors.", "This is the dungeon entrance. It's relatively safe here.") {}
+BaseRoom::BaseRoom() : Room("You find yourself in a dark room at the entrance of the Dungeon.", "This is the dungeon entrance. It's relatively safe here.") {}
 
 void BaseRoom::enter(Player &player)
 {
     Room::enter(player);
-    std::cout << "Do you want to go through the left door, straight door or the right door?\n";
 }
 
 void BaseRoom::lookAround() const
@@ -286,6 +285,10 @@ void BossRoom1::enter(Player &player)
         if (choice == "fight")
         {
             player.fight(enemy);
+            if (!enemy->isAlive())
+            {
+                player.getGame().displayOutro();
+            }
         }
         else if (choice == "run")
         {

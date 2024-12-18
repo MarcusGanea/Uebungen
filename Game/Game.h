@@ -17,6 +17,7 @@ public:
     void handleInput(const std::string &input);
     void gameOver();
     void displayIntro() const;
+    void displayOutro(); // Add this method
     Room *getCurrentRoom() const;
     void setCurrentRoom(int roomIndex);
 
