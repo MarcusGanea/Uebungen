@@ -3,7 +3,7 @@
 
 Game::Game()
 {
-    player = new Player();
+    player = new Player(*this);
     initializeRooms();
     currentRoom = rooms[0];
 }
@@ -93,5 +93,41 @@ void Game::handleInput(const std::string &input)
     else
     {
         std::cout << "Invalid choice.\n";
+    }
+}
+
+void Game::gameOver()
+{
+    std::cout << "Game Over!\n";
+    std::cout << "1. Start a new game\n";
+    std::cout << "2. Quit\n";
+    std::cout << "Enter your choice: ";
+    std::string choice;
+    std::cin >> choice;
+    if (choice == "1")
+    {
+        delete player;
+        player = new Player(*this);
+
+        // Clear and delete old rooms
+        for (Room *room : rooms)
+        {
+            delete room;
+        }
+        rooms.clear();
+
+        initializeRooms();
+        currentRoom = rooms[0];
+        start();
+    }
+    else if (choice == "2")
+    {
+        std::cout << "Quitting the game.\n";
+        exit(0);
+    }
+    else
+    {
+        std::cout << "Invalid choice.\n";
+        gameOver();
     }
 }

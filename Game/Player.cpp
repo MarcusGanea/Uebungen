@@ -1,9 +1,17 @@
 #include "Player.h"
+#include "Game.h"
 #include <iostream>
 
-Player::Player()
-    : health(100), level(1), xp(0), gold(0), gear("None"), weapon("None"),
-      strength(10), stamina(10), agility(10), intelligence(10), wisdom(10), charisma(10), attackPower(10) {}
+#include "Player.h"
+#include "Game.h"
+#include <iostream>
+
+Player::Player(Game &game)
+    : game(game), health(100), level(1), xp(0), gold(0), gear("None"), weapon("None"),
+      strength(10), stamina(10), agility(10), intelligence(10), wisdom(10), charisma(10), attackPower(10)
+{
+    items.clear(); // Clear items vector when a new game starts
+}
 
 void Player::displayStats() const
 {
@@ -79,7 +87,6 @@ void Player::addItem(const std::string &item)
 
 void Player::fight(Enemy *enemy)
 {
-    int xpReward = enemy->getXpReward();
     while (enemy->isAlive() && health > 0)
     {
         std::cout << "You attack the " << enemy->getName() << " for " << attackPower << " damage.\n";
@@ -91,13 +98,14 @@ void Player::fight(Enemy *enemy)
             if (health <= 0)
             {
                 std::cout << "You have been defeated.\n";
+                game.gameOver();
                 return;
             }
         }
         else
         {
             std::cout << "You have defeated the " << enemy->getName() << "!\n";
-            int xpGained = xpReward;
+            int xpGained = enemy->getXpReward();
             xp += xpGained;
             std::cout << xpGained << " XP gained (" << (level * 100 - xp) << " XP to level " << (level + 1) << ")\n";
             if (xp >= level * 100)
@@ -133,10 +141,10 @@ void Player::showInventory() const
 
 void Player::equipItem(const std::string &item)
 {
-    if (item == "sword")
+    if (item == "sword (+5 Attack on Equip)")
     {
         weapon = "sword";
-        attackPower += 5;
+        attackPower += 10;
         std::cout << "You equipped the sword. Your attack power is now " << attackPower << ".\n";
     }
     else

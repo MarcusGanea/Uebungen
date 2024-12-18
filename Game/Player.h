@@ -5,10 +5,12 @@
 #include <vector>
 #include "Enemy.h"
 
+class Game; // Forward declaration
+
 class Player
 {
 public:
-    Player();
+    Player(Game &game);
     void displayStats() const;
     void lookAround() const;
     void attack();
@@ -25,6 +27,7 @@ public:
     void equipItem(const std::string &item);
 
 private:
+    Game &game;
     int health;
     int level;
     int xp;

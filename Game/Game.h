@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Room.h"
 #include <vector>
+#include <string>
 
 class Game
 {
@@ -11,12 +12,12 @@ public:
     Game();
     ~Game();
     void start();
-
-private:
     void initializeRooms();
     void showMenu();
     void handleInput(const std::string &input);
+    void gameOver();
 
+private:
     Player *player;
     std::vector<Room *> rooms;
     Room *currentRoom;
