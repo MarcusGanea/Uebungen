@@ -1,25 +1,146 @@
 #include "Player.h"
 #include <iostream>
 
-Player::Player(const std::string &name)
-    : name(name), health(100), level(1), xp(0), gold(0) {}
+Player::Player()
+    : health(100), level(1), xp(0), gold(0), gear("None"), weapon("None"),
+      strength(10), stamina(10), agility(10), intelligence(10), wisdom(10), charisma(10), attackPower(10) {}
+
+void Player::displayStats() const
+{
+    std::cout << "Health: " << health << "\n"
+              << "Level: " << level << "\n"
+              << "XP: " << xp << " (" << (level * 100 - xp) << " XP to level " << (level + 1) << ")\n"
+              << "Gold: " << gold << "\n"
+              << "Gear: " << gear << "\n"
+              << "Weapon: " << weapon << "\n"
+              << "Strength: " << strength << "\n"
+              << "Stamina: " << stamina << "\n"
+              << "Agility: " << agility << "\n"
+              << "Intelligence: " << intelligence << "\n"
+              << "Wisdom: " << wisdom << "\n"
+              << "Charisma: " << charisma << "\n"
+              << "Attack Power: " << attackPower << "\n";
+}
 
 void Player::lookAround() const
 {
     std::cout << "You look around the room.\n";
 }
 
-void Player::showStats() const
+void Player::attack()
 {
-    std::cout << "Name: " << name << "\n";
-    std::cout << "Health: " << health << "\n";
-    std::cout << "Level: " << level << "\n";
-    std::cout << "XP: " << xp << "\n";
-    std::cout << "Gold: " << gold << "\n";
-    std::cout << "Inventory: ";
-    for (const std::string &item : inventory)
+    std::cout << "You attack with your " << weapon << ".\n";
+}
+
+void Player::equip()
+{
+    std::cout << "You equip an item.\n";
+}
+
+void Player::drop()
+{
+    std::cout << "You drop an item.\n";
+}
+
+void Player::pickUp()
+{
+    std::cout << "You pick up an item.\n";
+}
+
+void Player::talkTo()
+{
+    std::cout << "You talk to someone.\n";
+}
+
+void Player::loot()
+{
+    std::cout << "You loot the area.\n";
+}
+
+void Player::showMenu() const
+{
+    std::cout << "Menu:\n"
+              << "1. Look Around\n"
+              << "2. Attack\n"
+              << "3. Equip\n"
+              << "4. Drop\n"
+              << "5. Pick Up\n"
+              << "6. Talk To\n"
+              << "7. Loot\n"
+              << "8. Show Stats\n"
+              << "9. Help\n";
+}
+
+void Player::addItem(const std::string &item)
+{
+    items.push_back(item);
+    std::cout << "You picked up: " << item << std::endl;
+}
+
+void Player::fight(Enemy *enemy)
+{
+    int xpReward = enemy->getXpReward();
+    while (enemy->isAlive() && health > 0)
     {
-        std::cout << item << " ";
+        std::cout << "You attack the " << enemy->getName() << " for " << attackPower << " damage.\n";
+        enemy->takeDamage(attackPower);
+        if (enemy->isAlive())
+        {
+            std::cout << "The " << enemy->getName() << " attacks you for " << enemy->getDamage() << " damage.\n";
+            health -= enemy->getDamage();
+            if (health <= 0)
+            {
+                std::cout << "You have been defeated.\n";
+                return;
+            }
+        }
+        else
+        {
+            std::cout << "You have defeated the " << enemy->getName() << "!\n";
+            int xpGained = xpReward;
+            xp += xpGained;
+            std::cout << xpGained << " XP gained (" << (level * 100 - xp) << " XP to level " << (level + 1) << ")\n";
+            if (xp >= level * 100)
+            {
+                levelUp();
+            }
+        }
     }
-    std::cout << "\n";
+}
+
+void Player::levelUp()
+{
+    level++;
+    health += 10;
+    attackPower += 10;
+    strength += 10;
+    stamina += 10;
+    agility += 10;
+    intelligence += 10;
+    wisdom += 10;
+    charisma += 10;
+    std::cout << "Congratulations! You have reached level " << level << ".\n";
+}
+
+void Player::showInventory() const
+{
+    std::cout << "Inventory:\n";
+    for (const auto &item : items)
+    {
+        std::cout << "- " << item << "\n";
+    }
+}
+
+void Player::equipItem(const std::string &item)
+{
+    if (item == "sword")
+    {
+        weapon = "sword";
+        attackPower += 5;
+        std::cout << "You equipped the sword. Your attack power is now " << attackPower << ".\n";
+    }
+    else
+    {
+        std::cout << "You can't equip that item.\n";
+    }
 }

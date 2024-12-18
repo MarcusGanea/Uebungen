@@ -21,3 +21,18 @@ void Enemy::takeDamage(int damage)
         health = 0;
     std::cout << name << " takes " << damage << " damage, health is now " << health << ".\n";
 }
+
+std::string Enemy::getName() const
+{
+    return name;
+}
+
+int Enemy::getDamage() const
+{
+    return damage;
+}
+
+int Enemy::getXpReward() const
+{
+    return health / 2; // Example XP reward calculation
+}

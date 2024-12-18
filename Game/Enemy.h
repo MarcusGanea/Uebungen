@@ -10,6 +10,9 @@ public:
     void attack();
     bool isAlive() const;
     void takeDamage(int damage);
+    std::string getName() const;
+    int getDamage() const;
+    int getXpReward() const;
 
 private:
     std::string name;

@@ -3,7 +3,7 @@
 
 Game::Game()
 {
-    player = new Player("Hero");
+    player = new Player();
     initializeRooms();
     currentRoom = rooms[0];
 }
@@ -31,19 +31,23 @@ void Game::start()
 
 void Game::initializeRooms()
 {
-    rooms.push_back(new Room("Starting Room"));
-    rooms.push_back(new Room("Treasure Room"));
-    rooms.push_back(new Room("Monster Room"));
-    rooms.push_back(new Room("Boss Room"));
+    rooms.push_back(new BaseRoom());
+    rooms.push_back(new TreasureRoom());
+    rooms.push_back(new MonsterRoom());
+    rooms.push_back(new BossRoom1());
+    rooms.push_back(new MonsterRoom2());
 }
 
 void Game::showMenu()
 {
+    std::cout << "=====================\n";
     std::cout << "Menu:\n";
     std::cout << "1. Look Around\n";
     std::cout << "2. Move to another room\n";
     std::cout << "3. Show Stats\n";
-    std::cout << "4. Quit\n";
+    std::cout << "4. Equip Item\n";
+    std::cout << "5. Quit\n";
+    std::cout << "=====================\n";
     std::cout << "Enter your choice: ";
 }
 
@@ -69,9 +73,19 @@ void Game::handleInput(const std::string &input)
     }
     else if (input == "3")
     {
-        player->showStats();
+        player->displayStats();
     }
     else if (input == "4")
+    {
+        std::cout << "Inventory:\n";
+        player->showInventory();
+        std::cout << "Enter the name of the item to equip: ";
+        std::string item;
+        std::cin.ignore();
+        std::getline(std::cin, item);
+        player->equipItem(item);
+    }
+    else if (input == "5")
     {
         std::cout << "Quitting the game.\n";
         exit(0);
