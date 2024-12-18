@@ -30,6 +30,7 @@ public:
     void lookAround() const override;
 };
 
+// Treasure Rooms
 class TreasureRoom : public Room
 {
 public:
@@ -46,6 +47,7 @@ public:
     void lookAround() const override;
 };
 
+// Monster Rooms
 class MonsterRoom : public Room
 {
 public:
@@ -62,6 +64,23 @@ public:
     void lookAround() const override;
 };
 
+class MonsterRoom3 : public Room
+{
+public:
+    MonsterRoom3();
+    void enter(Player &player) override;
+    void lookAround() const override;
+};
+
+class MonsterRoom4 : public Room
+{
+public:
+    MonsterRoom4();
+    void enter(Player &player) override;
+    void lookAround() const override;
+};
+
+// Boss Rooms
 class BossRoom1 : public Room
 {
 public:

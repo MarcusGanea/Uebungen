@@ -39,6 +39,8 @@ void Game::initializeRooms()
     rooms.push_back(new BossRoom1());
     rooms.push_back(new MonsterRoom2());
     rooms.push_back(new TreasureRoom2());
+    rooms.push_back(new MonsterRoom3());
+    rooms.push_back(new MonsterRoom4());
 }
 
 void Game::showMenu()
