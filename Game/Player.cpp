@@ -203,3 +203,8 @@ void Player::useItem(const std::string &item)
         std::cout << "You don't have that item in your inventory.\n";
     }
 }
+
+Game &Player::getGame() const
+{
+    return game;
+}

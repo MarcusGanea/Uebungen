@@ -17,10 +17,12 @@ public:
     void handleInput(const std::string &input);
     void gameOver();
     void displayIntro() const;
+    Room *getCurrentRoom() const;
+    void setCurrentRoom(int roomIndex);
 
 private:
     Player *player;
-    std::vector<Room *> rooms;
+    std::vector<Room *> rooms; // Vector of rooms
     Room *currentRoom;
 };
 

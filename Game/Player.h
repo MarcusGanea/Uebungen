@@ -28,6 +28,7 @@ public:
     void equipItem(const std::string &item);
     void unequipItem();
     void useItem(const std::string &item);
+    Game &getGame() const; // Add this method
 
 private:
     Game &game;

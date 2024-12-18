@@ -1,7 +1,9 @@
 #include "Room.h"
+#include "Game.h"
 #include <iostream>
 
-Room::Room(const std::string &description) : description(description), enemy(nullptr), looted(false) {}
+Room::Room(const std::string &description, const std::string &detailedDescription)
+    : description(description), detailedDescription(detailedDescription), enemy(nullptr), looted(false) {}
 
 void Room::enter(Player &player)
 {
@@ -21,7 +23,12 @@ void Room::enter(Player &player)
     }
 }
 
-BaseRoom::BaseRoom() : Room("You find yourself in a dark room") {}
+void Room::lookAround() const
+{
+    std::cout << detailedDescription << std::endl;
+}
+
+BaseRoom::BaseRoom() : Room("You find yourself in a dark room with three doors.", "This is the dungeon entrance. It's relatively safe here.") {}
 
 void BaseRoom::enter(Player &player)
 {
@@ -29,7 +36,12 @@ void BaseRoom::enter(Player &player)
     std::cout << "Do you want to go through the left door, straight door or the right door?\n";
 }
 
-TreasureRoom::TreasureRoom() : Room("Dungeon room 0_1 -Treasure Room")
+void BaseRoom::lookAround() const
+{
+    Room::lookAround();
+}
+
+TreasureRoom::TreasureRoom() : Room("Dungeon room 0_1 -Treasure Room", "You see a room filled with glittering treasures and valuable items.")
 {
     items.push_back("sword +5");
 }
@@ -68,7 +80,12 @@ void TreasureRoom::enter(Player &player)
     }
 }
 
-TreasureRoom2::TreasureRoom2() : Room("Dungeon room 0_5 -Treasure Room")
+void TreasureRoom::lookAround() const
+{
+    Room::lookAround();
+}
+
+TreasureRoom2::TreasureRoom2() : Room("Dungeon room 0_5 -Treasure Room", "You see a room with a single chest in the center, containing a Health Potion.")
 {
     items.push_back("Health Potion");
 }
@@ -107,7 +124,12 @@ void TreasureRoom2::enter(Player &player)
     }
 }
 
-MonsterRoom::MonsterRoom() : Room("Dungeon room 0_2 -Goblin Den")
+void TreasureRoom2::lookAround() const
+{
+    Room::lookAround();
+}
+
+MonsterRoom::MonsterRoom() : Room("Dungeon room 0_2 -Goblin Den", "You sense a dark and foul smell. Maybe you should turn around while you can.")
 {
     enemy = new Enemy("Goblin", 30, 5);
 }
@@ -127,7 +149,8 @@ void MonsterRoom::enter(Player &player)
         }
         else if (choice == "run")
         {
-            std::cout << "You run away safely.\n";
+            std::cout << "You ran back to the dungeon entrance.\n";
+            player.getGame().setCurrentRoom(0);
         }
         else
         {
@@ -136,7 +159,12 @@ void MonsterRoom::enter(Player &player)
     }
 }
 
-MonsterRoom2::MonsterRoom2() : Room("Dungeon room 0_4 -Tombs")
+void MonsterRoom::lookAround() const
+{
+    Room::lookAround();
+}
+
+MonsterRoom2::MonsterRoom2() : Room("Dungeon room 0_4 -Tombs", "You see ancient tombs and feel a chilling presence.")
 {
     enemy = new Enemy("Skeleton", 40, 5);
 }
@@ -156,7 +184,8 @@ void MonsterRoom2::enter(Player &player)
         }
         else if (choice == "run")
         {
-            std::cout << "You run away safely.\n";
+            std::cout << "You ran back to the dungeon entrance.\n";
+            player.getGame().setCurrentRoom(0);
         }
         else
         {
@@ -165,7 +194,12 @@ void MonsterRoom2::enter(Player &player)
     }
 }
 
-BossRoom1::BossRoom1() : Room("You encounter the final boss!")
+void MonsterRoom2::lookAround() const
+{
+    Room::lookAround();
+}
+
+BossRoom1::BossRoom1() : Room("You encounter the final boss!", "The air is thick with tension. The final battle awaits.")
 {
     enemy = new Enemy("Dragon", 100, 20);
 }
@@ -185,11 +219,17 @@ void BossRoom1::enter(Player &player)
         }
         else if (choice == "run")
         {
-            std::cout << "You run away safely, but the game continues.\n";
+            std::cout << "You ran back to the dungeon entrance.\n";
+            player.getGame().setCurrentRoom(0);
         }
         else
         {
             std::cout << "Invalid choice. Please type 'fight' or 'run'.\n";
         }
     }
+}
+
+void BossRoom1::lookAround() const
+{
+    Room::lookAround();
 }

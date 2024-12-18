@@ -61,7 +61,7 @@ void Game::handleInput(const std::string &input)
 {
     if (input == "1")
     {
-        player->lookAround();
+        currentRoom->lookAround();
     }
     else if (input == "2")
     {
@@ -182,4 +182,17 @@ void Game::displayIntro() const
     std::cout << "Press Enter to start the game...";
     std::cin.ignore();
     std::cin.get();
+}
+
+Room *Game::getCurrentRoom() const
+{
+    return currentRoom;
+}
+
+void Game::setCurrentRoom(int roomIndex)
+{
+    if (roomIndex >= 0 && roomIndex < rooms.size())
+    {
+        currentRoom = rooms[roomIndex];
+    }
 }
