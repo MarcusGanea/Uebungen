@@ -16,6 +16,7 @@ public:
     void showMenu();
     void handleInput(const std::string &input);
     void gameOver();
+    void displayIntro() const;
 
 private:
     Player *player;

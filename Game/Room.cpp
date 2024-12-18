@@ -1,12 +1,12 @@
 #include "Room.h"
 #include <iostream>
 
-Room::Room(const std::string &description) : description(description), enemy(nullptr) {}
+Room::Room(const std::string &description) : description(description), enemy(nullptr), looted(false) {}
 
 void Room::enter(Player &player)
 {
     std::cout << description << std::endl;
-    if (!items.empty())
+    if (!items.empty() && !looted)
     {
         std::cout << "You see: ";
         for (const auto &item : items)
@@ -21,7 +21,7 @@ void Room::enter(Player &player)
     }
 }
 
-BaseRoom::BaseRoom() : Room("You find yourself in a dark room with three doors.") {}
+BaseRoom::BaseRoom() : Room("You find yourself in a dark room") {}
 
 void BaseRoom::enter(Player &player)
 {
@@ -31,32 +31,79 @@ void BaseRoom::enter(Player &player)
 
 TreasureRoom::TreasureRoom() : Room("Dungeon room 0_1 -Treasure Room")
 {
-    items.push_back("sword (+5 Attack on Equip)");
+    items.push_back("sword +5");
 }
 
 void TreasureRoom::enter(Player &player)
 {
     Room::enter(player);
-    std::cout << "Do you want to take the items or leave them?\n";
-    std::string choice;
-    std::cin >> choice;
+    if (!looted)
+    {
+        std::cout << "Do you want to take the items or leave them?\n";
+        std::string choice;
+        std::cin >> choice;
 
-    if (choice == "take")
-    {
-        for (const auto &item : items)
+        if (choice == "take")
         {
-            player.addItem(item);
+            for (const auto &item : items)
+            {
+                player.addItem(item);
+            }
+            items.clear();
+            looted = true;
+            std::cout << "You take the items.\n";
         }
-        items.clear();
-        std::cout << "You take the items.\n";
-    }
-    else if (choice == "leave")
-    {
-        std::cout << "You leave the items and exit the room.\n";
+        else if (choice == "leave")
+        {
+            std::cout << "You leave the items and exit the room.\n";
+        }
+        else
+        {
+            std::cout << "Invalid choice. Please type 'take' or 'leave'.\n";
+        }
     }
     else
     {
-        std::cout << "Invalid choice. Please type 'take' or 'leave'.\n";
+        std::cout << "The room is empty. You have already taken the items.\n";
+    }
+}
+
+TreasureRoom2::TreasureRoom2() : Room("Dungeon room 0_5 -Treasure Room")
+{
+    items.push_back("Health Potion");
+}
+
+void TreasureRoom2::enter(Player &player)
+{
+    Room::enter(player);
+    if (!looted)
+    {
+        std::cout << "Do you want to take the items or leave them?\n";
+        std::string choice;
+        std::cin >> choice;
+
+        if (choice == "take")
+        {
+            for (const auto &item : items)
+            {
+                player.addItem(item);
+            }
+            items.clear();
+            looted = true;
+            std::cout << "You take the items.\n";
+        }
+        else if (choice == "leave")
+        {
+            std::cout << "You leave the items and exit the room.\n";
+        }
+        else
+        {
+            std::cout << "Invalid choice. Please type 'take' or 'leave'.\n";
+        }
+    }
+    else
+    {
+        std::cout << "The room is empty. You have already taken the items.\n";
     }
 }
 
@@ -118,7 +165,7 @@ void MonsterRoom2::enter(Player &player)
     }
 }
 
-BossRoom1::BossRoom1() : Room("Boss Room 0_1 - The Dragon")
+BossRoom1::BossRoom1() : Room("You encounter the final boss!")
 {
     enemy = new Enemy("Dragon", 100, 20);
 }

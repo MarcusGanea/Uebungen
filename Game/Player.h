@@ -15,6 +15,7 @@ public:
     void lookAround() const;
     void attack();
     void equip();
+    void unequip();
     void drop();
     void pickUp();
     void talkTo();
@@ -25,6 +26,8 @@ public:
     void levelUp();
     void showInventory() const;
     void equipItem(const std::string &item);
+    void unequipItem();
+    void useItem(const std::string &item);
 
 private:
     Game &game;
@@ -32,7 +35,7 @@ private:
     int level;
     int xp;
     int gold;
-    std::vector<std::string> items;
+    std::vector<std::string> items; // Vector of items
     std::string gear;
     std::string weapon;
     int strength;
@@ -42,6 +45,7 @@ private:
     int wisdom;
     int charisma;
     int attackPower;
+    int maxHealth;
 };
 
 #endif // PLAYER_H

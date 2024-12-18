@@ -17,6 +17,7 @@ protected:
     std::string description;
     std::vector<std::string> items;
     Enemy *enemy;
+    bool looted; // Boolean to check if items have been looted
 };
 
 class BaseRoom : public Room
@@ -30,6 +31,13 @@ class TreasureRoom : public Room
 {
 public:
     TreasureRoom();
+    void enter(Player &player) override;
+};
+
+class TreasureRoom2 : public Room
+{
+public:
+    TreasureRoom2();
     void enter(Player &player) override;
 };
 
