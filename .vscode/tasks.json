@@ -10,7 +10,8 @@
                 "${file}",
                 "-o",
                 "${fileDirname}\\${fileBasenameNoExtension}.exe",
-                ""
+                "-static-libgcc",
+                "-static-libstdc++"
             ],
             "options": {
                 "cwd": "C:/msys64/ucrt64/bin"
