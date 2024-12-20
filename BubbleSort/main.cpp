@@ -4,7 +4,7 @@
 
 int main()
 {
-    std::vector<int> v = {7, 5, 16, 8};
+    std::vector<int> v = {45, 54, 6, 83};
 
     for (int i = 0; i < v.size(); i++)
     {
