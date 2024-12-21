@@ -12,15 +12,17 @@ public:
     Dungeon();
     ~Dungeon();
     void start();
-    void generateRooms();
+    void generateDungeon();
     void showMenu();
     void handleInput(const std::string &input);
 
 private:
-    std::map<std::string, std::unique_ptr<Room>> rooms;
+    std::vector<std::vector<std::unique_ptr<Room>>> dungeonLevels;
     std::vector<std::string> availableRooms;
     Room *currentRoom;
+    int currentLevel;
     bool bossRoomUnlocked;
+    bool bossRoomPlaced;
 };
 
 #endif // DUNGEON_H

@@ -4,41 +4,44 @@
 #include <ctime>
 #include <sstream>
 
-Dungeon::Dungeon() : bossRoomUnlocked(false) {
+Dungeon::Dungeon() : currentLevel(0), bossRoomUnlocked(false), bossRoomPlaced(false) {
     std::srand(static_cast<unsigned int>(std::time(nullptr))); // Seed the random number generator
-    generateRooms();
-    currentRoom = rooms["base"].get();
+    generateDungeon();
+    currentRoom = dungeonLevels[currentLevel][0].get();
 }
 
 Dungeon::~Dungeon() {
     // No need to manually delete rooms since we are using unique_ptr
 }
 
-void Dungeon::generateRooms() {
-    rooms["base"] = std::make_unique<BaseRoom>();
-
+void Dungeon::generateDungeon() {
     // Define possible room types
-    std::vector<std::string> roomTypes = {"treasure", "boss", "monster", "puzzle", "trap"};
+    std::vector<std::string> roomTypes = {"treasure", "monster", "puzzle", "trap"};
 
-    // Randomly generate rooms
-    for (const auto &roomType : roomTypes) {
-        int randomIndex = std::rand() % roomTypes.size();
-        if (roomTypes[randomIndex] == "treasure") {
-            rooms["treasure"] = std::make_unique<TreasureRoom>();
-            availableRooms.push_back("treasure");
-        } else if (roomTypes[randomIndex] == "boss") {
-            rooms["boss"] = std::make_unique<BossRoom>();
-            availableRooms.push_back("boss");
-        } else if (roomTypes[randomIndex] == "monster") {
-            rooms["monster"] = std::make_unique<MonsterRoom>();
-            availableRooms.push_back("monster");
-        } else if (roomTypes[randomIndex] == "puzzle") {
-            rooms["puzzle"] = std::make_unique<PuzzleRoom>();
-            availableRooms.push_back("puzzle");
-        } else if (roomTypes[randomIndex] == "trap") {
-            rooms["trap"] = std::make_unique<TrapRoom>();
-            availableRooms.push_back("trap");
+    for (int level = 0; level < 10; ++level) {
+        std::vector<std::unique_ptr<Room>> levelRooms;
+
+        for (int i = 0; i < 3; ++i) {
+            int randomIndex = std::rand() % roomTypes.size();
+            if (roomTypes[randomIndex] == "treasure") {
+                levelRooms.push_back(std::make_unique<TreasureRoom>());
+            } else if (roomTypes[randomIndex] == "monster") {
+                levelRooms.push_back(std::make_unique<MonsterRoom>());
+            } else if (roomTypes[randomIndex] == "puzzle") {
+                levelRooms.push_back(std::make_unique<PuzzleRoom>());
+            } else if (roomTypes[randomIndex] == "trap") {
+                levelRooms.push_back(std::make_unique<TrapRoom>());
+            }
         }
+
+        // Place the boss room at a random position in the 10th level if not already placed
+        if (level == 9 && !bossRoomPlaced) {
+            int bossRoomIndex = std::rand() % 3;
+            levelRooms[bossRoomIndex] = std::make_unique<BossRoom>();
+            bossRoomPlaced = true;
+        }
+
+        dungeonLevels.push_back(std::move(levelRooms));
     }
 }
 
@@ -55,10 +58,13 @@ void Dungeon::start() {
 void Dungeon::showMenu() {
     std::cout << "=====================\n";
     std::cout << "Menu:\n";
-    for (size_t i = 0; i < availableRooms.size(); ++i) {
-        std::cout << i + 1 << ". Go to " << availableRooms[i] << " room\n";
+    for (size_t i = 0; i < 3; ++i) {
+        std::cout << i + 1 << ". Go to room " << i + 1 << "\n";
     }
-    std::cout << availableRooms.size() + 1 << ". Quit\n";
+    if (currentLevel > 0) {
+        std::cout << "4. Go back to previous level\n";
+    }
+    std::cout << "5. Quit\n";
     std::cout << "=====================\n";
     std::cout << "Enter your choice: ";
 }
@@ -67,13 +73,15 @@ void Dungeon::handleInput(const std::string &input) {
     int choice;
     std::stringstream(input) >> choice;
 
-    if (choice > 0 && choice <= static_cast<int>(availableRooms.size())) {
-        std::string selectedRoom = availableRooms[choice - 1];
-        currentRoom = rooms[selectedRoom].get();
-        if (selectedRoom == "treasure") {
-            bossRoomUnlocked = true; // Unlock boss room after visiting treasure room
+    if (choice > 0 && choice <= 3) {
+        currentRoom = dungeonLevels[currentLevel][choice - 1].get();
+        if (currentLevel < 9) {
+            ++currentLevel;
         }
-    } else if (choice == static_cast<int>(availableRooms.size()) + 1) {
+    } else if (choice == 4 && currentLevel > 0) {
+        --currentLevel;
+        currentRoom = dungeonLevels[currentLevel][0].get();
+    } else if (choice == 5) {
         std::cout << "Quitting the game.\n";
         exit(0);
     } else {
