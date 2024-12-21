@@ -6,12 +6,14 @@
 
 class Room {
 public:
-    Room(const std::string &description);
+    Room(const std::string &name, const std::string &description);
     virtual ~Room() = default;
     virtual void enter();
     std::string getDescription() const;
+    std::string getName() const;
 
 protected:
+    std::string name;
     std::string description;
 };
 
