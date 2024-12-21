@@ -16,7 +16,7 @@ public:
 
 private:
     void generateLevel(Room* parentRoom, int level, const std::vector<std::string>& roomTypes);
-    std::vector<std::unique_ptr<Room>> dungeonLevels;
+    std::vector<std::vector<std::unique_ptr<Room>>> dungeonLevels;
     Room* currentRoom;
     int currentLevel;
     bool bossRoomUnlocked;
