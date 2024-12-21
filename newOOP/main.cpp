@@ -1,5 +1,7 @@
-#include <stdio.h>
+#include "Dungeon.h"
 
-int main(){
-    
+int main() {
+    Dungeon dungeon;
+    dungeon.start();
+    return 0;
 }
