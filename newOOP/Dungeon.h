@@ -15,7 +15,7 @@ public:
     void handleInput(const std::string &input);
 
 private:
-    void generateLevel(Room* parentRoom, int level, const std::vector<std::string>& roomTypes);
+    std::vector<std::unique_ptr<Room>> generateLevel(int level, const std::vector<std::string>& roomTypes);
     std::vector<std::vector<std::unique_ptr<Room>>> dungeonLevels;
     Room* currentRoom;
     int currentLevel;
