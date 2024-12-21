@@ -30,7 +30,7 @@ void Dungeon::generateDungeon() {
     for (int level = 0; level < 9; ++level) {
         for (auto& room : dungeonLevels[level]) {
             for (int i = 0; i < 3; ++i) {
-                room->addNextRoom(std::make_unique<Room>(*dungeonLevels[level + 1][i]));
+                room->addNextRoom(dungeonLevels[level + 1][i].get());
             }
         }
     }
@@ -94,7 +94,7 @@ void Dungeon::handleInput(const std::string &input) {
 
     const auto& nextRooms = currentRoom->getNextRooms();
     if (choice > 0 && choice <= static_cast<int>(nextRooms.size())) {
-        currentRoom = nextRooms[choice - 1].get();
+        currentRoom = nextRooms[choice - 1];
         if (currentLevel < 9) {
             ++currentLevel;
         }
