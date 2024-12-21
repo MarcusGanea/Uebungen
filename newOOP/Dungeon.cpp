@@ -7,7 +7,7 @@
 Dungeon::Dungeon() : currentLevel(0), bossRoomUnlocked(false), bossRoomPlaced(false) {
     std::srand(static_cast<unsigned int>(std::time(nullptr))); // Seed the random number generator
     generateDungeon();
-    currentRoom = dungeonLevels[0].get();
+    currentRoom = dungeonLevels[0][0].get();
 }
 
 Dungeon::~Dungeon() {
@@ -19,43 +19,48 @@ void Dungeon::generateDungeon() {
     std::vector<std::string> roomTypes = {"treasure", "monster", "puzzle", "trap"};
 
     // Generate the base level
-    dungeonLevels.push_back(std::make_unique<BaseRoom>());
+    dungeonLevels.push_back(generateLevel(0, roomTypes));
 
     // Generate subsequent levels
-    generateLevel(dungeonLevels[0].get(), 1, roomTypes);
+    for (int level = 1; level < 3; ++level) { // Decrease the maximum number of levels to 3
+        dungeonLevels.push_back(generateLevel(level, roomTypes));
+    }
+
+    // Link rooms to their next level rooms
+    for (int level = 0; level < 2; ++level) { // Adjust the loop to match the new maximum level
+        for (auto& room : dungeonLevels[level]) {
+            for (int i = 0; i < 3; ++i) {
+                room->addNextRoom(dungeonLevels[level + 1][i].get());
+            }
+        }
+    }
 }
 
-void Dungeon::generateLevel(Room* parentRoom, int level, const std::vector<std::string>& roomTypes) {
-    if (level > 5) return; // Decrease the maximum number of levels to 5
+std::vector<std::unique_ptr<Room>> Dungeon::generateLevel(int level, const std::vector<std::string>& roomTypes) {
+    std::vector<std::unique_ptr<Room>> levelRooms;
 
     for (int i = 0; i < 3; ++i) {
         int randomIndex = std::rand() % roomTypes.size();
-        std::unique_ptr<Room> newRoom;
+        std::string roomName = "Room " + std::to_string(level * 3 + i + 1);
         if (roomTypes[randomIndex] == "treasure") {
-            newRoom = std::make_unique<TreasureRoom>();
+            levelRooms.push_back(std::make_unique<TreasureRoom>());
         } else if (roomTypes[randomIndex] == "monster") {
-            newRoom = std::make_unique<MonsterRoom>();
+            levelRooms.push_back(std::make_unique<MonsterRoom>());
         } else if (roomTypes[randomIndex] == "puzzle") {
-            newRoom = std::make_unique<PuzzleRoom>();
+            levelRooms.push_back(std::make_unique<PuzzleRoom>());
         } else if (roomTypes[randomIndex] == "trap") {
-            newRoom = std::make_unique<TrapRoom>();
+            levelRooms.push_back(std::make_unique<TrapRoom>());
         }
-
-        Room* newRoomPtr = newRoom.get();
-        parentRoom->addNextRoom(newRoomPtr);
-        dungeonLevels.push_back(std::move(newRoom));
-
-        // Place the boss room at a random position in the 5th level if not already placed
-        if (level == 5 && !bossRoomPlaced) {
-            int bossRoomIndex = std::rand() % 3;
-            if (i == bossRoomIndex) {
-                parentRoom->getNextRooms()[i] = new BossRoom();
-                bossRoomPlaced = true;
-            }
-        }
-
-        generateLevel(newRoomPtr, level + 1, roomTypes);
     }
+
+    // Place the boss room at a random position in the 3rd level if not already placed
+    if (level == 2 && !bossRoomPlaced) {
+        int bossRoomIndex = std::rand() % 3;
+        levelRooms[bossRoomIndex] = std::make_unique<BossRoom>();
+        bossRoomPlaced = true;
+    }
+
+    return levelRooms;
 }
 
 void Dungeon::start() {
@@ -90,12 +95,12 @@ void Dungeon::handleInput(const std::string &input) {
     const auto& nextRooms = currentRoom->getNextRooms();
     if (choice > 0 && choice <= static_cast<int>(nextRooms.size())) {
         currentRoom = nextRooms[choice - 1];
-        if (currentLevel < 5) { // Adjust the maximum level check
+        if (currentLevel < 3) { // Adjust the maximum level check
             ++currentLevel;
         }
     } else if (choice == 4 && currentLevel > 0) {
         --currentLevel;
-        currentRoom = dungeonLevels[currentLevel].get();
+        currentRoom = dungeonLevels[currentLevel][0].get();
     } else if (choice == 5) {
         std::cout << "Quitting the game.\n";
         exit(0);
