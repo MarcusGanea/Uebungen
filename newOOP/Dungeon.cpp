@@ -23,6 +23,7 @@ void Dungeon::generateDungeon() {
 
         for (int i = 0; i < 3; ++i) {
             int randomIndex = std::rand() % roomTypes.size();
+            std::string roomName = "Room " + std::to_string(level * 3 + i + 1);
             if (roomTypes[randomIndex] == "treasure") {
                 levelRooms.push_back(std::make_unique<TreasureRoom>());
             } else if (roomTypes[randomIndex] == "monster") {
@@ -59,7 +60,7 @@ void Dungeon::showMenu() {
     std::cout << "=====================\n";
     std::cout << "Menu:\n";
     for (size_t i = 0; i < 3; ++i) {
-        std::cout << i + 1 << ". Go to room " << i + 1 << "\n";
+        std::cout << i + 1 << ". Go to " << dungeonLevels[currentLevel][i]->getName() << "\n";
     }
     if (currentLevel > 0) {
         std::cout << "4. Go back to previous level\n";
