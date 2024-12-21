@@ -2,8 +2,6 @@
 #define DUNGEON_H
 
 #include "Room.h"
-#include <map>
-#include <string>
 #include <vector>
 #include <memory>
 
@@ -17,9 +15,9 @@ public:
     void handleInput(const std::string &input);
 
 private:
+    std::vector<std::unique_ptr<Room>> generateLevel(int level, const std::vector<std::string>& roomTypes);
     std::vector<std::vector<std::unique_ptr<Room>>> dungeonLevels;
-    std::vector<std::string> availableRooms;
-    Room *currentRoom;
+    Room* currentRoom;
     int currentLevel;
     bool bossRoomUnlocked;
     bool bossRoomPlaced;

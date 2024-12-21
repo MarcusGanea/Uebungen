@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 class Room {
 public:
@@ -11,10 +12,13 @@ public:
     virtual void enter();
     std::string getDescription() const;
     std::string getName() const;
+    void addNextRoom(std::unique_ptr<Room> room);
+    const std::vector<std::unique_ptr<Room>>& getNextRooms() const;
 
 protected:
     std::string name;
     std::string description;
+    std::vector<std::unique_ptr<Room>> nextRooms;
 };
 
 class BaseRoom : public Room {

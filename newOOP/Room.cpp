@@ -15,6 +15,14 @@ std::string Room::getName() const {
     return name;
 }
 
+void Room::addNextRoom(std::unique_ptr<Room> room) {
+    nextRooms.push_back(std::move(room));
+}
+
+const std::vector<std::unique_ptr<Room>>& Room::getNextRooms() const {
+    return nextRooms;
+}
+
 BaseRoom::BaseRoom() : Room("Base Room", "You are in the base room.") {}
 
 void BaseRoom::enter() {
