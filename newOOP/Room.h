@@ -33,4 +33,22 @@ public:
     void enter() override;
 };
 
+class MonsterRoom : public Room {
+public:
+    MonsterRoom();
+    void enter() override;
+};
+
+class PuzzleRoom : public Room {
+public:
+    PuzzleRoom();
+    void enter() override;
+};
+
+class TrapRoom : public Room {
+public:
+    TrapRoom();
+    void enter() override;
+};
+
 #endif // ROOM_H

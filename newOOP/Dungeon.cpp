@@ -18,7 +18,7 @@ void Dungeon::generateRooms() {
     rooms["base"] = std::make_unique<BaseRoom>();
 
     // Define possible room types
-    std::vector<std::string> roomTypes = {"treasure", "boss"};
+    std::vector<std::string> roomTypes = {"treasure", "boss", "monster", "puzzle", "trap"};
 
     // Randomly generate rooms
     for (const auto &roomType : roomTypes) {
@@ -27,6 +27,12 @@ void Dungeon::generateRooms() {
             rooms["treasure"] = std::make_unique<TreasureRoom>();
         } else if (roomTypes[randomIndex] == "boss") {
             rooms["boss"] = std::make_unique<BossRoom>();
+        } else if (roomTypes[randomIndex] == "monster") {
+            rooms["monster"] = std::make_unique<MonsterRoom>();
+        } else if (roomTypes[randomIndex] == "puzzle") {
+            rooms["puzzle"] = std::make_unique<PuzzleRoom>();
+        } else if (roomTypes[randomIndex] == "trap") {
+            rooms["trap"] = std::make_unique<TrapRoom>();
         }
     }
 }

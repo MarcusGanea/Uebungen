@@ -31,3 +31,24 @@ void TreasureRoom::enter() {
     Room::enter();
     std::cout << "You see a chest filled with gold.\n";
 }
+
+MonsterRoom::MonsterRoom() : Room("You have entered a monster room!") {}
+
+void MonsterRoom::enter() {
+    Room::enter();
+    std::cout << "A wild monster appears!\n";
+}
+
+PuzzleRoom::PuzzleRoom() : Room("You have entered a puzzle room!") {}
+
+void PuzzleRoom::enter() {
+    Room::enter();
+    std::cout << "Solve the puzzle to proceed.\n";
+}
+
+TrapRoom::TrapRoom() : Room("You have entered a trap room!") {}
+
+void TrapRoom::enter() {
+    Room::enter();
+    std::cout << "Watch out for traps!\n";
+}
