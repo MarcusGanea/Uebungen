@@ -4,6 +4,8 @@
 #include "Room.h"
 #include <map>
 #include <string>
+#include <vector>
+#include <memory>
 
 class Dungeon {
 public:
@@ -15,7 +17,7 @@ public:
     void handleInput(const std::string &input);
 
 private:
-    std::map<std::string, Room *> rooms;
+    std::map<std::string, std::unique_ptr<Room>> rooms;
     Room *currentRoom;
     bool bossRoomUnlocked;
 };

@@ -2,23 +2,33 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-#include <sstream> // Add this include for stringstream
+#include <sstream>
 
 Dungeon::Dungeon() : bossRoomUnlocked(false) {
+    std::srand(static_cast<unsigned int>(std::time(nullptr))); // Seed the random number generator
     generateRooms();
-    currentRoom = rooms["base"];
+    currentRoom = rooms["base"].get();
 }
 
 Dungeon::~Dungeon() {
-    for (auto &pair : rooms) {
-        delete pair.second;
-    }
+    // No need to manually delete rooms since we are using unique_ptr
 }
 
 void Dungeon::generateRooms() {
-    rooms["base"] = new BaseRoom();
-    rooms["treasure"] = new TreasureRoom();
-    rooms["boss"] = new BossRoom();
+    rooms["base"] = std::make_unique<BaseRoom>();
+
+    // Define possible room types
+    std::vector<std::string> roomTypes = {"treasure", "boss"};
+
+    // Randomly generate rooms
+    for (const auto &roomType : roomTypes) {
+        int randomIndex = std::rand() % roomTypes.size();
+        if (roomTypes[randomIndex] == "treasure") {
+            rooms["treasure"] = std::make_unique<TreasureRoom>();
+        } else if (roomTypes[randomIndex] == "boss") {
+            rooms["boss"] = std::make_unique<BossRoom>();
+        }
+    }
 }
 
 void Dungeon::start() {
@@ -49,12 +59,12 @@ void Dungeon::handleInput(const std::string &input) {
 
     switch (choice) {
         case 1:
-            currentRoom = rooms["treasure"];
+            currentRoom = rooms["treasure"].get();
             bossRoomUnlocked = true; // Unlock boss room after visiting treasure room
             break;
         case 2:
             if (bossRoomUnlocked) {
-                currentRoom = rooms["boss"];
+                currentRoom = rooms["boss"].get();
             } else {
                 std::cout << "Boss room is locked.\n";
             }
