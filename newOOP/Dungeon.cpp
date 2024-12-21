@@ -25,14 +25,19 @@ void Dungeon::generateRooms() {
         int randomIndex = std::rand() % roomTypes.size();
         if (roomTypes[randomIndex] == "treasure") {
             rooms["treasure"] = std::make_unique<TreasureRoom>();
+            availableRooms.push_back("treasure");
         } else if (roomTypes[randomIndex] == "boss") {
             rooms["boss"] = std::make_unique<BossRoom>();
+            availableRooms.push_back("boss");
         } else if (roomTypes[randomIndex] == "monster") {
             rooms["monster"] = std::make_unique<MonsterRoom>();
+            availableRooms.push_back("monster");
         } else if (roomTypes[randomIndex] == "puzzle") {
             rooms["puzzle"] = std::make_unique<PuzzleRoom>();
+            availableRooms.push_back("puzzle");
         } else if (roomTypes[randomIndex] == "trap") {
             rooms["trap"] = std::make_unique<TrapRoom>();
+            availableRooms.push_back("trap");
         }
     }
 }
@@ -50,11 +55,10 @@ void Dungeon::start() {
 void Dungeon::showMenu() {
     std::cout << "=====================\n";
     std::cout << "Menu:\n";
-    std::cout << "1. Go to treasure room\n";
-    if (bossRoomUnlocked) {
-        std::cout << "2. Go to boss room\n";
+    for (size_t i = 0; i < availableRooms.size(); ++i) {
+        std::cout << i + 1 << ". Go to " << availableRooms[i] << " room\n";
     }
-    std::cout << "3. Quit\n";
+    std::cout << availableRooms.size() + 1 << ". Quit\n";
     std::cout << "=====================\n";
     std::cout << "Enter your choice: ";
 }
@@ -63,23 +67,16 @@ void Dungeon::handleInput(const std::string &input) {
     int choice;
     std::stringstream(input) >> choice;
 
-    switch (choice) {
-        case 1:
-            currentRoom = rooms["treasure"].get();
+    if (choice > 0 && choice <= static_cast<int>(availableRooms.size())) {
+        std::string selectedRoom = availableRooms[choice - 1];
+        currentRoom = rooms[selectedRoom].get();
+        if (selectedRoom == "treasure") {
             bossRoomUnlocked = true; // Unlock boss room after visiting treasure room
-            break;
-        case 2:
-            if (bossRoomUnlocked) {
-                currentRoom = rooms["boss"].get();
-            } else {
-                std::cout << "Boss room is locked.\n";
-            }
-            break;
-        case 3:
-            std::cout << "Quitting the game.\n";
-            exit(0);
-        default:
-            std::cout << "Invalid choice.\n";
-            break;
+        }
+    } else if (choice == static_cast<int>(availableRooms.size()) + 1) {
+        std::cout << "Quitting the game.\n";
+        exit(0);
+    } else {
+        std::cout << "Invalid choice.\n";
     }
 }

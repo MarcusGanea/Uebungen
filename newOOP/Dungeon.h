@@ -18,6 +18,7 @@ public:
 
 private:
     std::map<std::string, std::unique_ptr<Room>> rooms;
+    std::vector<std::string> availableRooms;
     Room *currentRoom;
     bool bossRoomUnlocked;
 };
