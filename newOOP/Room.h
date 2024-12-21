@@ -12,13 +12,13 @@ public:
     virtual void enter();
     std::string getDescription() const;
     std::string getName() const;
-    void addNextRoom(std::unique_ptr<Room> room);
-    const std::vector<std::unique_ptr<Room>>& getNextRooms() const;
+    void addNextRoom(Room* room);
+    const std::vector<Room*>& getNextRooms() const;
 
 protected:
     std::string name;
     std::string description;
-    std::vector<std::unique_ptr<Room>> nextRooms;
+    std::vector<Room*> nextRooms;
 };
 
 class BaseRoom : public Room {

@@ -15,11 +15,11 @@ std::string Room::getName() const {
     return name;
 }
 
-void Room::addNextRoom(std::unique_ptr<Room> room) {
-    nextRooms.push_back(std::move(room));
+void Room::addNextRoom(Room* room) {
+    nextRooms.push_back(room);
 }
 
-const std::vector<std::unique_ptr<Room>>& Room::getNextRooms() const {
+const std::vector<Room*>& Room::getNextRooms() const {
     return nextRooms;
 }
 
