@@ -22,12 +22,12 @@ void Dungeon::generateDungeon() {
     dungeonLevels.push_back(generateLevel(0, roomTypes));
 
     // Generate subsequent levels
-    for (int level = 1; level < 10; ++level) {
+    for (int level = 1; level < 5; ++level) { // Decrease the maximum number of levels to 5
         dungeonLevels.push_back(generateLevel(level, roomTypes));
     }
 
     // Link rooms to their next level rooms
-    for (int level = 0; level < 9; ++level) {
+    for (int level = 0; level < 4; ++level) { // Adjust the loop to match the new maximum level
         for (auto& room : dungeonLevels[level]) {
             for (int i = 0; i < 3; ++i) {
                 room->addNextRoom(dungeonLevels[level + 1][i].get());
@@ -53,8 +53,8 @@ std::vector<std::unique_ptr<Room>> Dungeon::generateLevel(int level, const std::
         }
     }
 
-    // Place the boss room at a random position in the 10th level if not already placed
-    if (level == 9 && !bossRoomPlaced) {
+    // Place the boss room at a random position in the 5th level if not already placed
+    if (level == 4 && !bossRoomPlaced) {
         int bossRoomIndex = std::rand() % 3;
         levelRooms[bossRoomIndex] = std::make_unique<BossRoom>();
         bossRoomPlaced = true;
@@ -95,7 +95,7 @@ void Dungeon::handleInput(const std::string &input) {
     const auto& nextRooms = currentRoom->getNextRooms();
     if (choice > 0 && choice <= static_cast<int>(nextRooms.size())) {
         currentRoom = nextRooms[choice - 1];
-        if (currentLevel < 9) {
+        if (currentLevel < 4) { // Adjust the maximum level check
             ++currentLevel;
         }
     } else if (choice == 4 && currentLevel > 0) {
